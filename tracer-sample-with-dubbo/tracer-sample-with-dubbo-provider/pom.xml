@@ -11,6 +11,8 @@
 
     <artifactId>tracer-sample-with-dubbo-provider</artifactId>
 
+
+
     <dependencies>
 
         <!-- Spring Boot dependencies -->
@@ -23,19 +25,17 @@
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-spring-boot-starter</artifactId>
-            <version>2.7.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo</artifactId>
-            <version>2.7.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.alipay.sofa</groupId>
             <artifactId>tracer-sample-with-dubbo-facade</artifactId>
-            <version>3.0.7</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -47,19 +47,16 @@
         <dependency>
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
-            <version>3.4.13</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
-            <version>2.9.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-recipes</artifactId>
-            <version>2.9.1</version>
         </dependency>
 
     </dependencies>
