@@ -16,39 +16,19 @@
  */
 package com.alipay.sofa.tracer.examples.rest;
 
-import com.sofa.alipay.tracer.plugins.rest.SofaTracerRestTemplateBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.web.client.AsyncRestTemplate;
-import org.springframework.web.client.RestTemplate;
 
 /**
- *  RestTemplateDemoApplication
+ * RestTemplateDemoApplication
  * @author: guolei.sgl
+ * @since v2.3.0
  */
 @SpringBootApplication
 public class RestTemplateDemoApplication {
-    private static Logger logger = LoggerFactory.getLogger(RestTemplateDemoApplication.class);
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         SpringApplication.run(RestTemplateDemoApplication.class, args);
-        RestTemplate restTemplate = SofaTracerRestTemplateBuilder.buildRestTemplate();
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(
-            "http://localhost:8801/rest", String.class);
-        logger.info("Response is {}", responseEntity.getBody());
-
-        AsyncRestTemplate asyncRestTemplate = SofaTracerRestTemplateBuilder
-            .buildAsyncRestTemplate();
-        ListenableFuture<ResponseEntity<String>> forEntity = asyncRestTemplate.getForEntity(
-            "http://localhost:8801/asyncrest", String.class);
-        //async
-        logger.info("Async Response is {}", forEntity.get().getBody());
-
-        logger.info("test finish .......");
     }
 
 }

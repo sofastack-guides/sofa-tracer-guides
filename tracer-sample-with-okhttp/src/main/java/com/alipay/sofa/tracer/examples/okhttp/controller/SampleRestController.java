@@ -14,23 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alipay.sofa.tracer.examples.openfeign.service;
+package com.alipay.sofa.tracer.examples.okhttp.controller;
 
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * 基于 Spring Cloud Feign 进行服务调用
- * @author: guolei.sgl (guolei.sgl@antfin.com) 2019/3/5 5:44 PM
- * @since:
- **/
-@FeignClient(value = "tracer-provider", fallback = FeignServiceFallbackFactory.class)
-public interface FeignService {
+ * SampleRestController
+ * @author guolei.sgl
+ */
+@RestController
+public class SampleRestController {
+
+    private final AtomicLong counter = new AtomicLong(0);
+
     /**
-     * 查询用户详情
-     * @return
+     * Request http://localhost:8081/okhttp?name=
+     * @param name name
+     * @return Map of Result
      */
-    @RequestMapping(value = "/feign", method = RequestMethod.GET)
-    String testFeign();
+    @RequestMapping("/okhttp")
+    public Map<String, Object> greeting(@RequestParam(value = "name", defaultValue = "okhttp") String name) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("count", counter.incrementAndGet());
+        map.put("name", name);
+        return map;
+    }
 }

@@ -45,7 +45,6 @@ public interface HelloService {
     String SayHello(String name);
 }
 ```
-
 ## 新建 tracer-sample-with-dubbo-provider
 
 * 在工程模块的 pom 文件中添加 SOFATracer 依赖
@@ -64,7 +63,7 @@ public interface HelloService {
     # Spring boot application
     spring.application.name=dubbo-provider
     # Base packages to scan Dubbo Component: @org.apache.dubbo.config.annotation.Service
-    dubbo.scan.base-packages=com.alipay.sofa.tracer.samples.dubbo.impl
+    dubbo.scan.base-packages=com.alipay.sofa.tracer.examples.dubbo.impl
     ##  Filter
     dubbo.provider.filter=dubboSofaTracerFilter
     # Dubbo Protocol

@@ -14,36 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alipay.sofa.tracer.examples.openfeign;
+package com.alipay.sofa.tracer.examples.okhttp;
 
-import com.alipay.sofa.tracer.examples.openfeign.service.FeignService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alipay.sofa.tracer.examples.okhttp.instance.OkHttpClientInstance;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author: guolei.sgl (guolei.sgl@antfin.com) 2019/4/12 2:10 PM
- * @since:
- **/
+ * HttpClientDemoApplication
+ *
+ * @author yangguanchao
+ * @since 2018/09/27
+ */
 @SpringBootApplication
-@RestController
-@EnableDiscoveryClient
-@EnableFeignClients
-public class FeignClientApplication {
+public class OkHttpDemoApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(FeignClientApplication.class, args);
-    }
+    private static Logger logger = LoggerFactory.getLogger(OkHttpDemoApplication.class);
 
-    @Autowired
-    private FeignService feignService;
-
-    @RequestMapping
-    public String test() {
-        return feignService.testFeign();
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(OkHttpDemoApplication.class, args);
+        OkHttpClientInstance httpClient = new OkHttpClientInstance();
+        String httpGetUrl = "http://localhost:8081/okhttp?name=sofa";
+        String responseStr = httpClient.executeGet(httpGetUrl);
+        logger.info("Response is {}", responseStr);
     }
 }
