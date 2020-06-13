@@ -35,7 +35,7 @@ import com.sofa.alipay.tracer.plugins.rest.RestTemplateDigestJsonEncoder;
 /**
  * DigestSpanEncoderFactory
  *
- * @author chenchen
+ * @author chenchen(chenmudu@gmail.com)
  * @since 2020/06/12
  */
 public class DigestSpanEncoderFactory extends ComponentNameConstants {

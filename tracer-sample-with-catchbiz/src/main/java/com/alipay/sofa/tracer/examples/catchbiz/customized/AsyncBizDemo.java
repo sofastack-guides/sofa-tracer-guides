@@ -32,7 +32,7 @@ import java.util.Objects;
 /**
  * AsyncBizDemo
  *
- * @author chenchen
+ * @author chenchen(chenmudu@gmail.com)
  * @since 2020/06/12
  */
 @Component
