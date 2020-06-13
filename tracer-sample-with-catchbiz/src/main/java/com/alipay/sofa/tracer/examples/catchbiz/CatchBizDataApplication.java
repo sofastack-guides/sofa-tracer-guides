@@ -22,7 +22,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
- * CustomSpanReportListener
+ * CatchBizDataApplication
  *
  * @author chenchen
  * @since 2020/06/12

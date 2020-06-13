@@ -33,7 +33,7 @@ import com.sofa.alipay.tracer.plugins.rest.RestTemplateDigestJsonEncoder;
 
 
 /**
- * AsyncBizDemo
+ * DigestSpanEncoderFactory
  *
  * @author chenchen
  * @since 2020/06/12
