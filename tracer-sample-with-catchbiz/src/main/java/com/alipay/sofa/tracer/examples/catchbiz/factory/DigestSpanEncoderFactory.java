@@ -1,20 +1,3 @@
-package com.alipay.sofa.tracer.examples.catchbiz.factory;
-
-import com.alipay.common.tracer.core.constants.ComponentNameConstants;
-import com.alipay.common.tracer.core.middleware.parent.AbstractDigestSpanEncoder;
-import com.alipay.sofa.tracer.plugin.flexible.FlexibleDigestEncoder;
-import com.alipay.sofa.tracer.plugin.flexible.FlexibleDigestJsonEncoder;
-import com.alipay.sofa.tracer.plugins.datasource.tracer.DataSourceClientDigestEncoder;
-import com.alipay.sofa.tracer.plugins.datasource.tracer.DataSourceClientDigestJsonEncoder;
-import com.alipay.sofa.tracer.plugins.dubbo.encoder.DubboServerDigestEncoder;
-import com.alipay.sofa.tracer.plugins.dubbo.encoder.DubboServerDigestJsonEncoder;
-import com.alipay.sofa.tracer.plugins.httpclient.HttpClientDigestEncoder;
-import com.alipay.sofa.tracer.plugins.httpclient.HttpClientDigestJsonEncoder;
-import com.alipay.sofa.tracer.plugins.springmvc.SpringMvcDigestEncoder;
-import com.alipay.sofa.tracer.plugins.springmvc.SpringMvcDigestJsonEncoder;
-import com.sofa.alipay.tracer.plugins.rest.RestTemplateDigestEncoder;
-import com.sofa.alipay.tracer.plugins.rest.RestTemplateDigestJsonEncoder;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -30,6 +13,30 @@ import com.sofa.alipay.tracer.plugins.rest.RestTemplateDigestJsonEncoder;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ */
+package com.alipay.sofa.tracer.examples.catchbiz.factory;
+import com.alipay.common.tracer.core.constants.ComponentNameConstants;
+import com.alipay.common.tracer.core.middleware.parent.AbstractDigestSpanEncoder;
+import com.alipay.sofa.tracer.plugin.flexible.FlexibleDigestEncoder;
+import com.alipay.sofa.tracer.plugin.flexible.FlexibleDigestJsonEncoder;
+import com.alipay.sofa.tracer.plugins.datasource.tracer.DataSourceClientDigestEncoder;
+import com.alipay.sofa.tracer.plugins.datasource.tracer.DataSourceClientDigestJsonEncoder;
+import com.alipay.sofa.tracer.plugins.dubbo.encoder.DubboServerDigestEncoder;
+import com.alipay.sofa.tracer.plugins.dubbo.encoder.DubboServerDigestJsonEncoder;
+import com.alipay.sofa.tracer.plugins.httpclient.HttpClientDigestEncoder;
+import com.alipay.sofa.tracer.plugins.httpclient.HttpClientDigestJsonEncoder;
+import com.alipay.sofa.tracer.plugins.springmvc.SpringMvcDigestEncoder;
+import com.alipay.sofa.tracer.plugins.springmvc.SpringMvcDigestJsonEncoder;
+import com.sofa.alipay.tracer.plugins.rest.RestTemplateDigestEncoder;
+import com.sofa.alipay.tracer.plugins.rest.RestTemplateDigestJsonEncoder;
+
+
+
+/**
+ * AsyncBizDemo
+ *
+ * @author chenchen
+ * @since 2020/06/12
  */
 public class DigestSpanEncoderFactory extends ComponentNameConstants {
 

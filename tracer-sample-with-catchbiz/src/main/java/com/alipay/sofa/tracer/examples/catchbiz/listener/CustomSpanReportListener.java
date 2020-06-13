@@ -1,17 +1,3 @@
-package com.alipay.sofa.tracer.examples.catchbiz.listener;
-
-import com.alipay.common.tracer.core.listener.SpanReportListener;
-import com.alipay.common.tracer.core.span.SofaTracerSpan;
-import com.alipay.sofa.tracer.examples.catchbiz.customized.AsyncBizDemo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.task.TaskExecutor;
-import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.util.concurrent.Executor;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -28,6 +14,27 @@ import java.util.concurrent.Executor;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ */
+package com.alipay.sofa.tracer.examples.catchbiz.listener;
+
+import com.alipay.common.tracer.core.listener.SpanReportListener;
+import com.alipay.common.tracer.core.span.SofaTracerSpan;
+import com.alipay.sofa.tracer.examples.catchbiz.customized.AsyncBizDemo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.concurrent.Executor;
+
+/**
+ * CustomSpanReportListener
+ *
+ * @author chenchen
+ * @since 2020/06/12
  */
 @Component
 public class CustomSpanReportListener implements SpanReportListener {
