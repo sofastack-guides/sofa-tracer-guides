@@ -10,3 +10,4 @@
 * [SOFATracer 示例工程（SOFATracer 集成 SpringCloud）](tracer-sample-with-openfeign)
 * [SOFATracer 示例工程（SOFATracer 集成 Dubbo）](tracer-sample-with-dubbo)
 * [SOFATracer 示例工程（SOFATracer 集成 RestTemplate）](tracer-sample-with-resttemplate)
+* [SOFATracer 示例工程（SOFATracer 监听收集摘要日志）](tracer-sample-with-catchbiz)
