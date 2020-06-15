@@ -16,6 +16,9 @@
  */
 package com.alipay.sofa.tracer.examples.catchbiz.controller;
 
+import com.alipay.common.tracer.core.tags.SpanTags;
+import com.alipay.sofa.tracer.plugin.flexible.annotations.Tracer;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,18 +39,36 @@ public class SampleRestController {
     private static final String TEMPLATE = "Hello, %s!";
 
     private final AtomicLong    counter  = new AtomicLong();
+    
+    private static ApplicationContext appContext;
+
+    public static void setApplicationContext(ApplicationContext applicationContext) {
+        appContext =  applicationContext;
+    }
 
     /***
      * http://localhost:8089/springmvc
      * @param name name
      * @return map
      */
+    @Tracer
     @RequestMapping("/springmvc")
     public Map<String, Object> springmvc(@RequestParam(value = "name", defaultValue = "SOFATracer Catch Biz Data DEMO") String name) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
+        SpanTags.putTags("bizDataName", "bizDataVal");
         resultMap.put("success", true);
         resultMap.put("id", counter.incrementAndGet());
         resultMap.put("content", String.format(TEMPLATE, name));
+        appContext.getBean(SampleRestController.class).setOthersTagByApplicationContext();
         return resultMap;
+    }
+
+    /**
+     * it's ok! but, not recommend.
+     * In this way, it is independent of the modifier of the method.
+     */
+    @Tracer
+    private void setOthersTagByApplicationContext() {
+        SpanTags.putTags("bizAopDataName", "bizAopDataVal");
     }
 }

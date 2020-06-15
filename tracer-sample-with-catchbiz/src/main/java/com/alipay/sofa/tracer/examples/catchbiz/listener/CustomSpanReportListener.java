@@ -17,14 +17,13 @@
  */
 package com.alipay.sofa.tracer.examples.catchbiz.listener;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.common.tracer.core.listener.SpanReportListener;
 import com.alipay.common.tracer.core.span.SofaTracerSpan;
-import com.alipay.sofa.tracer.examples.catchbiz.customized.AsyncBizDemo;
+import com.alipay.sofa.tracer.examples.catchbiz.customized.AsyncCatchDigestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -42,18 +41,19 @@ public class CustomSpanReportListener implements SpanReportListener {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private Executor threadExecutor;
+    private Executor taskExecutor;
 
     @Autowired
-    private AsyncBizDemo bizAsyncService;
+    private AsyncCatchDigestService bizAsyncService;
 
     //don't block the current thread(http server worker thread).
     //keeps the current operation asynchronous.
     @Override
     public void onSpanReport(SofaTracerSpan sofaTracerSpan) {
-        threadExecutor.execute(() -> {
+        logger.info("current tracerSpan is :" + JSONObject.toJSONString(sofaTracerSpan));
+        taskExecutor.execute(() -> {
             try {
-                bizAsyncService.asyncBizService(sofaTracerSpan);
+                bizAsyncService.asyncExecuteDigestData(sofaTracerSpan);
             } catch (IOException e) {
                 logger.error(String.valueOf(e.getStackTrace()));
             }

@@ -16,9 +16,16 @@
  */
 package com.alipay.sofa.tracer.examples.catchbiz;
 
+import com.alipay.sofa.tracer.examples.catchbiz.controller.SampleRestController;
+import com.sofa.alipay.tracer.plugins.rest.SofaTracerRestTemplateBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * CatchBizDataApplication
@@ -29,9 +36,15 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 @SpringBootApplication
 public class CatchBizDataApplication {
+    private static Logger logger = LoggerFactory.getLogger(CatchBizDataApplication.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(CatchBizDataApplication.class, args);
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(CatchBizDataApplication.class, args);
+        SampleRestController.setApplicationContext(applicationContext);
+        RestTemplate restTemplate = SofaTracerRestTemplateBuilder.buildRestTemplate();
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(
+                "http://localhost:8089/springmvc", String.class);
+        logger.info("Response is {}", responseEntity.getBody());
     }
 
 }
