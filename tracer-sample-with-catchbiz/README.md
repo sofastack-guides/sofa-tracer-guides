@@ -1,6 +1,6 @@
-# 使用 SOFATracer 监听和捕获所有的摘要数据 XXX-XXX-digest.log日志(包括业务埋点数据)
+# 使用 SOFATracer 监听和捕获所有的摘要数据并以默认摘要日志格式输出 xxx-xxx-digest.log日志(包括业务埋点数据)
 
-本示例演示如何在集成了 SOFATracer 的应用，通过配置 SOFATracer 并监听和捕获所有的摘要数据(包括业务埋点数据) 并以SOFATracer默认的摘要格式输出。
+本示例演示如何在集成了 SOFATracer 的应用，通过配置 SOFATracer 监听和捕获所有的摘要数据(包括业务埋点数据) 并以SOFATracer默认的摘要格式输出， 而且提供了在不破坏面向对象(封装)的基础上，用@Tracer跳过Spring Aop 限制进行业务埋点的案例。
 
 下面的示例中将分别演示在 SOFABoot/SpringBoot 工程中 以及 非 SOFABoot/SpringBoot 工程中如何使用。
 
@@ -69,6 +69,12 @@ public class SampleRestController {
     private static final String TEMPLATE = "Hello, %s!";
 
     private final AtomicLong    counter  = new AtomicLong();
+    
+    private static ApplicationContext appContext;
+
+    public static void setApplicationContext(ApplicationContext applicationContext) {
+        appContext =  applicationContext;
+    }
 
     /***
      * http://localhost:8089/springmvc
@@ -86,17 +92,35 @@ public class SampleRestController {
 }
 ```
 
+在启动类中添加resttemplate的相关配置，并将当前ApplicationContext对象传递至SampleRestController内，容器启动后自动请求当前springmvc接口：
+```java
+@EnableAsync
+@SpringBootApplication
+public class CatchBizDataApplication {
+    private static Logger logger = LoggerFactory.getLogger(CatchBizDataApplication.class);
+
+    public static void main(String[] args) {
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(CatchBizDataApplication.class, args);
+        SampleRestController.setApplicationContext(applicationContext);
+        RestTemplate restTemplate = SofaTracerRestTemplateBuilder.buildRestTemplate();
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(
+                "http://localhost:8089/springmvc", String.class);
+        logger.info("Response is {}", responseEntity.getBody());
+    }
+
+}
+```
+
 ## 运行
 
 可以将工程导入到 IDE 中运行生成的工程里面中的 `main` 方法（一般上在 XXXApplication 这个类中）启动应用，也可以直接在该工程的根目录下运行 `mvn spring-boot:run`，将会在控制台中看到启动打印的日志：
 
 ```
-2020-06-13 00:40:32.712  INFO 18512 --- [nio-8089-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2020-06-13 00:40:32.713  INFO 18512 --- [nio-8089-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2020-06-13 00:40:32.730  INFO 18512 --- [nio-8089-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 15 ms
+2020-06-17 20:03:55.715  INFO 15092 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8089 (http) with context path ''
+2020-06-17 20:03:55.721  INFO 15092 --- [           main] c.a.s.t.e.c.CatchBizDataApplication      : Started CatchBizDataApplication in 6.398 seconds (JVM running for 8.439)
 ```
 
-可以通过在浏览器中输入 [http://localhost:8089/springmvc](http://localhost:8089/springmvc) 来访问 REST 服务，结果类似如下：
+也可以通过在浏览器中输入 [http://localhost:8089/springmvc](http://localhost:8089/springmvc) 来再一次访问 REST 服务，结果类似如下：
 
 ```json
 {
@@ -114,6 +138,10 @@ public class SampleRestController {
 ./logs
 ├── spring.log
 └── tracelog
+    ├── biz-digest.log
+    ├── biz-stat.log
+    ├── resttemplate-digest.log
+    ├── resttemplate-stat.log
     ├── spring-mvc-digest.log
     ├── spring-mvc-stat.log
     ├── static-info.log
@@ -121,21 +149,25 @@ public class SampleRestController {
 
 ```
 
-通过访问 [http://localhost:8089/springmvc](http://localhost:8089/springmvc) SOFATracer 会记录每一次访问的摘要日志，可以打开 `spring-mvc-digest.log` 看到具体的输出内容，而对于每一个输出字段的含义可以看 SOFATracer 的说明文档。
+通过日志，SOFATracer 会记录每一次访问的摘要日志和统计日志，可以打开 `xxx-digest.log` 或`xxx-stat.log` 看到具体的输出内容，而对于每一个输出字段的含义可以看 SOFATracer 的说明文档。
 
+控制台中可看到经过转换后拿到的数据为：
+biz-digest.log：
 ```json
-{"time":"2020-06-13 00:40:33.592","local.app":"CatchBizDemo","traceId":"c0a819011591980033344100118512","spanId":"0","span.kind":"server","result.code":"200","current.thread.name":"http-nio-8089-exec-1","time.cost.milliseconds":"248ms","request.url":"http://localhost:8089/springmvc","method":"GET","req.size.bytes":-1,"resp.size.bytes":0,"sys.baggage":"","biz.baggage":""}
+{"time":"2020-06-17 20:03:56.839","local.app":"CatchBizDemo","traceId":"c0a819011592395436495100115092","spanId":"0.1.2","span.kind":"client","result.code":"99","current.thread.name":"http-nio-8089-exec-1","time.cost.milliseconds":"5ms","method":"springmvc","param.types":"java.lang.String","bizDataName":"bizDataVal","bizAopDataName":"bizAopDataVal","result.code":"99","sys.baggage":"","biz.baggage":""}
+```
+spring-mvc-digest.log：
+```json
+{"time":"2020-06-17 20:03:57.079","local.app":"CatchBizDemo","traceId":"c0a819011592395436495100115092","spanId":"0.1","span.kind":"server","result.code":"200","current.thread.name":"http-nio-8089-exec-1","time.cost.milliseconds":"285ms","request.url":"http://localhost:8089/springmvc","method":"GET","req.size.bytes":-1,"resp.size.bytes":0,"sys.baggage":"","biz.baggage":""}
+```
+
+resttemplate-digest.log：
+```json
+{"time":"2020-06-17 20:03:57.077","local.app":"CatchBizDemo","traceId":"c0a819011592395436495100115092","spanId":"0","span.kind":"client","result.code":"200","current.thread.name":"main","time.cost.milliseconds":"582ms","request.url":"http://localhost:8089/springmvc","method":"GET","resp.size.bytes":0,"resp.size.bytes":0,"error":"","sys.baggage":"","biz.baggage":""}
 ```
 ## 对比数据
-通过对比控制台采集到的数据与 ./logs/tracelog/spring-mvc-digest.log数据做对比
-- 控制台采集到的数据
+通过控制台业务采集到的数据与 ./logs/tracelog/xxx-digest.log 数据做对比，可观测到目标日志数据成功被捕获到。
+SOFATracer 使用者大多关心 xxx-digest.log的数据，这样我们就可以实现以默认落盘的数据格式拿到所有的摘要信息，方便后续数据的加工，清洗，处理。
 
-```json
-{"time":"2020-06-13 00:40:33.592","local.app":"CatchBizDemo","traceId":"c0a819011591980033344100118512","spanId":"0","span.kind":"server","result.code":"200","current.thread.name":"http-nio-8089-exec-1","time.cost.milliseconds":"248ms","request.url":"http://localhost:8089/springmvc","method":"GET","req.size.bytes":-1,"resp.size.bytes":0,"sys.baggage":"","biz.baggage":""}
-```
-- ./logs/tracelog/spring-mvc-digest.log内的数据
-```json
-{"time":"2020-06-13 00:40:33.592","local.app":"CatchBizDemo","traceId":"c0a819011591980033344100118512","spanId":"0","span.kind":"server","result.code":"200","current.thread.name":"http-nio-8089-exec-1","time.cost.milliseconds":"248ms","request.url":"http://localhost:8089/springmvc","method":"GET","req.size.bytes":-1,"resp.size.bytes":0,"sys.baggage":"","biz.baggage":""}
-```
-
-这样我们就可以实现以默认落盘的数据格式拿到所有的摘要信息，方便后续数据的加工，清洗，处理。
+## 具体逻辑
+具体的捕获逻辑和处理方案以及格式转换的开关，请查看 /src/目录下的代码。

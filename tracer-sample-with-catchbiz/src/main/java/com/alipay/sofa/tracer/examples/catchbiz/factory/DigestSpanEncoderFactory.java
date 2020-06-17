@@ -21,6 +21,8 @@ import com.alipay.sofa.tracer.plugin.flexible.FlexibleDigestEncoder;
 import com.alipay.sofa.tracer.plugin.flexible.FlexibleDigestJsonEncoder;
 import com.alipay.sofa.tracer.plugins.datasource.tracer.DataSourceClientDigestEncoder;
 import com.alipay.sofa.tracer.plugins.datasource.tracer.DataSourceClientDigestJsonEncoder;
+import com.alipay.sofa.tracer.plugins.dubbo.encoder.DubboClientDigestEncoder;
+import com.alipay.sofa.tracer.plugins.dubbo.encoder.DubboClientDigestJsonEncoder;
 import com.alipay.sofa.tracer.plugins.dubbo.encoder.DubboServerDigestEncoder;
 import com.alipay.sofa.tracer.plugins.dubbo.encoder.DubboServerDigestJsonEncoder;
 import com.alipay.sofa.tracer.plugins.httpclient.HttpClientDigestEncoder;
@@ -71,7 +73,7 @@ public class DigestSpanEncoderFactory extends ComponentNameConstants {
                 encoder = new DubboServerDigestJsonEncoder();
                 break;
             case DUBBO_CLIENT:
-                encoder = new DubboServerDigestJsonEncoder();
+                encoder = new DubboClientDigestJsonEncoder();
                 break;
             case DATA_SOURCE:
                 encoder = new DataSourceClientDigestJsonEncoder();
@@ -103,7 +105,7 @@ public class DigestSpanEncoderFactory extends ComponentNameConstants {
                 encoder = new DubboServerDigestEncoder();
                 break;
             case DUBBO_CLIENT:
-                encoder = new DubboServerDigestEncoder();
+                encoder = new DubboClientDigestEncoder();
                 break;
             case DATA_SOURCE:
                 encoder = new DataSourceClientDigestEncoder();
