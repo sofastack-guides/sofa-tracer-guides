@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>sofa-tracer-sample-with-h2</artifactId>
+    <artifactId>tracer-sample-with-h2</artifactId>
 
     <dependencies>
         <dependency>
