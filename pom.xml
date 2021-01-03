@@ -52,6 +52,7 @@
         <module>tracer-sample-with-resttemplate</module>
         <module>tracer-sample-with-catchbiz</module>
         <module>tracer-sample-with-mongo</module>
+        <module>tracer-sample-with-redis</module>
     </modules>
 
 
