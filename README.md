@@ -12,3 +12,6 @@
 * [SOFATracer 示例工程（SOFATracer 集成 RestTemplate）](tracer-sample-with-resttemplate)
 * [SOFATracer 示例工程（SOFATracer 监听收集摘要日志）](tracer-sample-with-catchbiz)
 * [SOFATracer 示例工程（SOFATracer 集成MongoDb）](tracer-sample-with-mongo)
+* [SOFATracer 示例工程（SOFATracer 集成RedisDb）](tracer-sample-with-redis)
+* [SOFATracer 示例工程（SOFATracer 集成RabbitMq）](tracer-sample-with-rabbit)
+* [SOFATracer 示例工程（SOFATracer 集成KafkaMq）](tracer-sample-with-kafka)
